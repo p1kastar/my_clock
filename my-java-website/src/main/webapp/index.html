@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Belarus Time</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        #clock {
+            font-size: 10vw;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        #date {
+            font-size: 3vw;
+            color: #555;
+            margin-bottom: 30px;
+        }
+        .toggle-btn {
+            padding: 10px 20px;
+            font-size: 1.5vw;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .toggle-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div id="clock"></div>
+    <div id="date"></div>
+    <button class="toggle-btn" onclick="toggleFormat()">Switch 12/24 hour format</button>
+
+    <script>
+        let is24HourFormat = true;
+        const englishMonths = [
+            'January', 'February', 'March', 'April',
+            'May', 'June', 'July', 'August',
+            'September', 'October', 'November', 'December'
+        ];
+        const englishDays = [
+            'Sunday', 'Monday', 'Tuesday', 'Wednesday',
+            'Thursday', 'Friday', 'Saturday'
+        ];
+
+        function updateTime() {
+            const now = new Date();
+            
+            // Set Belarus time (UTC+3)
+            const offset = 3; // Minsk time UTC+3
+            now.setHours(now.getUTCHours() + offset);
+            
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            
+            let timeString;
+            if (is24HourFormat) {
+                timeString = `${hours.toString().padStart(2, '0')}:${minutes}:${seconds}`;
+            } else {
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                hours = hours % 12;
+                hours = hours ? hours : 12; // 0 becomes 12 AM
+                timeString = `${hours}:${minutes}:${seconds} ${ampm}`;
+            }
+            
+            document.getElementById('clock').textContent = timeString;
+            
+            // English date format
+            const dayOfWeek = englishDays[now.getDay()];
+            const dayOfMonth = now.getDate();
+            const month = englishMonths[now.getMonth()];
+            const year = now.getFullYear();
+            document.getElementById('date').textContent = `${dayOfWeek}, ${month} ${dayOfMonth}, ${year}`;
+        }
+
+        function toggleFormat() {
+            is24HourFormat = !is24HourFormat;
+            updateTime();
+        }
+
+        // Update every second
+        setInterval(updateTime, 1000);
+        
+        // Initial update
+        updateTime();
+    </script>
+</body>
+</html>
