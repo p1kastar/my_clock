@@ -12,3 +12,5 @@ A simple fullscreen clock showing current Belarus time (UTC+3) with 12/24 hour f
 ```bash
 docker build -t belarus-clock .
 docker run -p 8080:8080 belarus-clock
+docker build -t my-clock . && docker run -p 8080:8080 my-clock
+docker-compose up -d
